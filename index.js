@@ -19,7 +19,7 @@ function Graph() {
 
 Graph.prototype = {
   add(key, descendants) {
-    descendants = Array.isArray(descendants) ? descendants : [descendants]
+    descendants = [].concat(descendants)
 
     const successors = descendants.map((descendant) => {
       if (!this.vertices[descendant]) {
@@ -37,7 +37,7 @@ Graph.prototype = {
   },
 
   addAndFilterDescendants(key, descendants, filter) {
-    descendants = Array.isArray(descendants) ? descendants : [descendants]
+    descendants = [].concat(descendants)
 
     const successors = descendants.reduce((fold, descendant) => {
       if (filter && !filter(descendant)) {

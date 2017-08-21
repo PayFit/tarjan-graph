@@ -21,7 +21,7 @@ Graph.prototype = {
   add(key, descendants) {
     descendants = [].concat(descendants)
 
-    const successors = descendants.map((descendant) => {
+    const successors = descendants.map(descendant => {
       if (!this.vertices[descendant]) {
         this.vertices[descendant] = new Vertex(descendant, [])
       }
@@ -60,7 +60,7 @@ Graph.prototype = {
   },
 
   reset() {
-    Object.keys(this.vertices).forEach((key) => {
+    Object.keys(this.vertices).forEach(key => {
       this.vertices[key].reset()
     })
   },
@@ -70,8 +70,8 @@ Graph.prototype = {
     const cycles = this.getCycles()
     if (cycles.length) {
       let message = 'Detected ' + cycles.length + ' cycle' + (cycles.length === 1 ? '' : 's') + ':'
-      message += '\n' + cycles.map((scc) => {
-        const names = scc.map((v) => v.name)
+      message += '\n' + cycles.map(scc => {
+        const names = scc.map(v => v.name)
         return '  ' + names.join(' -> ') + ' -> ' + names[0]
       }).join('\n')
 
@@ -96,16 +96,14 @@ Graph.prototype = {
       visitor(v)
       v.visited = true
 
-      v.successors.forEach((w) => {
-        stack.push(w)
-      })
+      v.successors.forEach(w => stack.push(w))
     }
   },
 
   getDescendants(key) {
     const descendants = []
     let ignore = true
-    this.dfs(key, (v) => {
+    this.dfs(key, v => {
       if (ignore) {
         // ignore the first node
         ignore = false
@@ -121,7 +119,7 @@ Graph.prototype = {
   },
 
   getStronglyConnectedComponents() {
-    const V = Object.keys(this.vertices).map((key) => {
+    const V = Object.keys(this.vertices).map(key => {
       this.vertices[key].reset()
       return this.vertices[key]
     })
@@ -137,7 +135,7 @@ Graph.prototype = {
       stack.push(v)
       v.onStack = true
 
-      v.successors.forEach((w) => {
+      v.successors.forEach(w => {
         if (w.index < 0) {
           stronglyConnect(w)
           v.lowLink = Math.min(v.lowLink, w.lowLink)
@@ -159,7 +157,7 @@ Graph.prototype = {
       }
     }
 
-    V.forEach((v) => {
+    V.forEach(v => {
       if (v.index < 0) {
         stronglyConnect(v)
       }
@@ -169,15 +167,15 @@ Graph.prototype = {
   },
 
   getCycles() {
-    return this.getStronglyConnectedComponents().filter((scc) => scc.length > 1)
+    return this.getStronglyConnectedComponents().filter(scc => scc.length > 1)
   },
 
   clone() {
     const graph = new Graph()
 
-    Object.keys(this.vertices).forEach((key) => {
+    Object.keys(this.vertices).forEach(key => {
       const v = this.vertices[key]
-      graph.add(v.name, v.successors.map((w) => w.name))
+      graph.add(v.name, v.successors.map(w => w.name))
     })
 
     return graph
@@ -191,16 +189,14 @@ Graph.prototype = {
     cycles.forEach((scc, i) => {
       lines.push('  subgraph cluster' + i + ' {')
       lines.push('    color=red;')
-      lines.push('    ' + scc.map((v) => v.name).join('; ') + ';')
+      lines.push('    ' + scc.map(v => v.name).join('; ') + ';')
       lines.push('  }')
     })
 
-    Object.keys(V).forEach((key) => {
+    Object.keys(V).forEach(key => {
       const v = V[key]
       if (v.successors.length) {
-        v.successors.forEach((w) => {
-          lines.push('  ' + v.name + ' -> ' + w.name)
-        })
+        v.successors.forEach(w => lines.push('  ' + v.name + ' -> ' + w.name))
       }
     })
 

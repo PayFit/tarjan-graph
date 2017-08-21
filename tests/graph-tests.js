@@ -4,11 +4,11 @@ const Graph = require('../')
 describe('Graph', function() {
   it('should detect cycle', function() {
     const graph = new Graph()
-        .add('a', ['b', 'c'])
-        .add('b', ['d', 'e'])
-        .add('c', ['b'])
-        .add('d', ['e'])
-        .add('e', ['c'])
+      .add('a', ['b', 'c'])
+      .add('b', ['d', 'e'])
+      .add('c', ['b'])
+      .add('d', ['e'])
+      .add('e', ['c'])
 
     const cycles = graph.getCycles()
     cycles.should.have.length(1)
@@ -21,9 +21,9 @@ describe('Graph', function() {
 
   it('should detect scc\'s properly', function() {
     const graph = new Graph()
-        .add('a', ['b'])
-        .add('b', ['c', 'd'])
-        .add('c', ['a'])
+      .add('a', ['b'])
+      .add('b', ['c', 'd'])
+      .add('c', ['a'])
 
     const sccs = graph.getStronglyConnectedComponents()
     sccs.should.have.length(2)
@@ -41,10 +41,10 @@ describe('Graph', function() {
 
   it('should get descendants', function() {
     const graph = new Graph()
-        .add('a', ['b', 'c'])
-        .add('b', ['d', 'e'])
-        .add('c', ['b'])
-        .add('d', ['e'])
+      .add('a', ['b', 'c'])
+      .add('b', ['d', 'e'])
+      .add('c', ['b'])
+      .add('d', ['e'])
 
     graph.hasCycle().should.equal(false)
     graph.getDescendants('a').should.eql(['c', 'b', 'e', 'd'])
@@ -66,12 +66,12 @@ describe('Graph', function() {
       }
       return !reject
     }
-    var graph = new Graph()
-        .addAndFilterDescendants('a', ['b', 'c', 'f'], filterFunc)
-        .addAndFilterDescendants('b', ['d', 'e', 'g'], filterFunc)
-        .addAndFilterDescendants('c', ['b', 'f', 'g'], filterFunc)
-        .addAndFilterDescendants('d', ['e'], filterFunc)
-        .addAndFilterDescendants('e', ['f'], filterFunc)
+    const graph = new Graph()
+      .addAndFilterDescendants('a', ['b', 'c', 'f'], filterFunc)
+      .addAndFilterDescendants('b', ['d', 'e', 'g'], filterFunc)
+      .addAndFilterDescendants('c', ['b', 'f', 'g'], filterFunc)
+      .addAndFilterDescendants('d', ['e'], filterFunc)
+      .addAndFilterDescendants('e', ['f'], filterFunc)
 
     graph.hasCycle().should.equal(false)
     graph.getDescendants('a').should.eql(['c', 'b', 'e', 'd'])
@@ -83,7 +83,7 @@ describe('Graph', function() {
 
   it('should explode if adding a node that creates a cycle', function() {
     const graph = new Graph()
-        .add('a', 'b')
+      .add('a', 'b')
 
     function explode() {
       graph.addAndVerify('b', 'a')
@@ -94,10 +94,10 @@ describe('Graph', function() {
 
   it('should convert acyclic graph to DOT', function() {
     const graph = new Graph()
-        .add('a', ['b', 'c'])
-        .add('b', ['d', 'e'])
-        .add('c', ['b'])
-        .add('d', ['e'])
+      .add('a', ['b', 'c'])
+      .add('b', ['d', 'e'])
+      .add('c', ['b'])
+      .add('d', ['e'])
 
     const expected = 'digraph {\n\
   b -> d\n\
@@ -113,16 +113,16 @@ describe('Graph', function() {
 
   it('should convert cyclic graph to DOT showing SCCs', function() {
     const graph = new Graph()
-        .add('a', ['b', 'c'])
-        .add('b', ['d', 'e'])
-        .add('c', ['b'])
-        .add('d', ['e'])
-        .add('e', ['c'])
-        .add('f', ['c', 'a', 'g'])
-        .add('g', ['h', 'i'])
-        .add('h', ['j'])
-        .add('i', ['j'])
-        .add('j', ['f'])
+      .add('a', ['b', 'c'])
+      .add('b', ['d', 'e'])
+      .add('c', ['b'])
+      .add('d', ['e'])
+      .add('e', ['c'])
+      .add('f', ['c', 'a', 'g'])
+      .add('g', ['h', 'i'])
+      .add('h', ['j'])
+      .add('i', ['j'])
+      .add('j', ['f'])
 
     const expected = 'digraph {\n\
   subgraph cluster0 {\n\
@@ -156,9 +156,9 @@ describe('Graph', function() {
 
   it('should clone graph', function() {
     const graph = new Graph()
-        .add('a', ['b', 'c'])
-        .add('b', ['d', 'e'])
-        .add('c', 'b')
+      .add('a', ['b', 'c'])
+      .add('b', ['d', 'e'])
+      .add('c', 'b')
 
     const otherGraph = graph.clone()
 
@@ -171,7 +171,7 @@ describe('Graph', function() {
     Object.keys(otherGraph.vertices).forEach(function(key) {
       graph.vertices.should.have.property(key)
 
-      //ensure there is no reference between the two graph instances
+      // ensure there is no reference between the two graph instances
       otherGraph.vertices[key].should.not.equal(graph.vertices[key])
 
       const w = graph.vertices[key].successors.map(function(w) {

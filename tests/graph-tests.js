@@ -1,5 +1,5 @@
 const should = require('should')
-const Graph = require('../')
+const Graph = require('../src/index')
 
 describe('Graph', function() {
   it('should detect cycle', function() {
